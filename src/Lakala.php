@@ -1,9 +1,9 @@
 <?php
-namespace Linsh\LakalaSdk;
+namespace Linshaoneng\LakalaSdk;
 
-use Linsh\LakalaSdk\Model\BaseRequest;
-use Linsh\LakalaSdk\Model\OrderCreateReq;
-use Linsh\LakalaSdk\Model\TransPreorderReq;
+use Linshaoneng\LakalaSdk\Model\BaseRequest;
+use Linshaoneng\LakalaSdk\Model\OrderCreateReq;
+use Linshaoneng\LakalaSdk\Model\TransPreorderReq;
 use GuzzleHttp\Client;
 
 /**

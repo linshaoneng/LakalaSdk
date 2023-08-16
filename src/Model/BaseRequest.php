@@ -1,6 +1,6 @@
 <?php
 
-namespace Linsh\LakalaSdk\Model;
+namespace Linshaoneng\LakalaSdk\Model;
 
 class BaseRequest
 {

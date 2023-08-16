@@ -9,7 +9,7 @@
 ### 收银台订单创建
 
 ```php
-$lakala = new \Linsh\LakalaSdk\Lakala([
+$lakala = new \Linshaoneng\LakalaSdk\Lakala([
     'appid' => 'OP00000xxx',
     'merchantNo' => 'xxx',
     'mchSerialNo' => 'xxx',
@@ -34,7 +34,7 @@ $returnData = [
 $authorization = $_SERVER['HTTP_AUTHORIZATION'];
 $response = file_get_contents("php://input");
 
-$lakala = new \Linsh\LakalaSdk\Lakala([
+$lakala = new \Linshaoneng\LakalaSdk\Lakala([
     'appid' => 'OP00000xxx',
     'merchantNo' => 'xxx',
     'mchSerialNo' => 'xxx',
@@ -59,7 +59,7 @@ return $returnData;
 require __DIR__.'/vendor/autoload.php';
 
 
-$lakala = new \Linsh\LakalaSdk\Lakala([
+$lakala = new \Linshaoneng\LakalaSdk\Lakala([
     'appid' => 'OP00000003',
     'merchantNo' => '8221210594300JY',
     'mchSerialNo' => '00dfba8194c41b84cf',

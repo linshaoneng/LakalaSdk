@@ -1,5 +1,5 @@
 {
-    "name": "linsh/lakala-sdk",
+    "name": "linshaoneng/lakala-sdk",
     "description": "lakala 收银台、微信支付sdk",
     "type": "library",
     "require": {
@@ -8,7 +8,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Linsh\\LakalaSdk\\": "src/"
+            "Linshaoneng\\LakalaSdk\\": "src/"
         }
     },
     "authors": [

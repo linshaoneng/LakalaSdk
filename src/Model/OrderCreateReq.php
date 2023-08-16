@@ -1,6 +1,6 @@
 <?php
 
-namespace Linsh\LakalaSdk\Model;
+namespace Linshaoneng\LakalaSdk\Model;
 /**
  * 收银台收款服务
  */
