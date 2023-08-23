@@ -1,10 +1,7 @@
 <?php
 
-namespace Linshaoneng\LakalaSdk\Model;
+namespace Linsh\LakalaSdk\Model;
 
-/**
- * 主扫交易接口
- */
 class TransPreorderReq
 {
     public $merchant_no;

@@ -1,9 +1,7 @@
 <?php
 
-namespace Linshaoneng\LakalaSdk\Model;
-/**
- * 收银台收款服务
- */
+namespace Linsh\LakalaSdk\Model;
+
 class OrderCreateReq
 {
     public $out_order_no;

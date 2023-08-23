@@ -1,9 +1,10 @@
 <?php
-namespace Linshaoneng\LakalaSdk;
+namespace Linsh\LakalaSdk;
 
-use Linshaoneng\LakalaSdk\Model\BaseRequest;
-use Linshaoneng\LakalaSdk\Model\OrderCreateReq;
-use Linshaoneng\LakalaSdk\Model\TransPreorderReq;
+use Linsh\LakalaSdk\Model\BaseRequest;
+use Linsh\LakalaSdk\Model\OrderCreateReq;
+use Linsh\LakalaSdk\Model\TransPreorderReq;
+use Linsh\LakalaSdk\Model\RefundReq;
 use GuzzleHttp\Client;
 
 /**
@@ -68,9 +69,7 @@ class Lakala {
         return $this->post($this->apiUrl . '/api/v3/ccss/counter/order/create', $body, $authorization);
     }
 
-    /**
-     * 主扫交易接口
-     */
+    //主扫交易接口
     public function transPreorder($termNo, $locationInfo, $outOrderNo, $totalAmount, $subject, $accBusiFields){
         $reqData = new TransPreorderReq();
         $reqData->merchant_no = $this->merchantNo;
@@ -90,12 +89,52 @@ class Lakala {
         $baseRequestVO->version = $this->version;
 
         $body = json_encode($baseRequestVO, JSON_UNESCAPED_UNICODE);
+        echo $body;
         $authorization = $this->getAuthorization($body);
         try{
             return $this->post($this->apiUrl . '/api/v3/labs/trans/preorder', $body, $authorization);
         }catch(\Throwable $e) {
             throw new \Exception('请求异常,'.$e->getMessage());
         } 
+    }
+
+    //03退款交易 
+    public function refund($termNo, $outOrderNo, $originOutTradeNo, $refundAmount, $refundReason='', $locationInfo)
+    {
+        $reqData = new RefundReq();
+        $reqData->merchant_no = $this->merchantNo;
+        $reqData->term_no = $termNo;
+        $reqData->out_trade_no = $outOrderNo;
+        $reqData->origin_out_trade_no = $originOutTradeNo;
+        $reqData->refund_amount = $refundAmount;
+        $reqData->refund_reason = $refundReason;
+        $reqData->location_info = $locationInfo;
+
+        $baseRequestVO = new BaseRequest(); 
+        $baseRequestVO->req_data = $reqData;
+        $baseRequestVO->req_time = date('YmdHis');
+        $baseRequestVO->version = $this->version;
+
+        $body = json_encode($baseRequestVO, JSON_UNESCAPED_UNICODE);
+        echo $body;
+        $authorization = $this->getAuthorization($body);
+        try{
+            return $this->post($this->apiUrl . '/api/v3/labs/relation/refund', $body, $authorization);
+        }catch(\Throwable $e) {
+            throw new \Exception('请求异常,'.$e->getMessage());
+        } 
+    }
+
+    //05关单交易
+    public function close()
+    {
+
+    }
+
+    //06查询交易
+    public function tradequery()
+    {
+
     }
 
     /**
@@ -156,7 +195,8 @@ class Lakala {
         if (!$response) {
             throw new \Exception('请求异常');
         }
-
+        echo "\r\n";
+        echo $response->getBody()->getContents();
         $result = json_decode($response->getBody()->getContents(), true);
         if (!isset($result['code']) || $result['code'] != 'BBS00000') {
             throw new \Exception('请求异常: ' . $result['msg']);
