@@ -5,6 +5,8 @@ use Linsh\LakalaSdk\Model\BaseRequest;
 use Linsh\LakalaSdk\Model\OrderCreateReq;
 use Linsh\LakalaSdk\Model\TransPreorderReq;
 use Linsh\LakalaSdk\Model\RefundReq;
+use Linsh\LakalaSdk\Model\CloseReq;
+use Linsh\LakalaSdk\Model\TradequeryReq;
 use GuzzleHttp\Client;
 
 /**
@@ -126,15 +128,50 @@ class Lakala {
     }
 
     //05关单交易
-    public function close()
+    public function close($termNo, $originOutTradeNo, $originTradeNo, $locationInfo)
     {
+        $reqData = new CloseReq();
+        $reqData->merchant_no = $this->merchantNo;
+        $reqData->term_no = $termNo; 
+        $reqData->origin_out_trade_no = $originOutTradeNo;
+        $reqData->origin_trade_no = $originTradeNo;
+        $reqData->location_info = $locationInfo;
 
+        $baseRequestVO = new BaseRequest(); 
+        $baseRequestVO->req_data = $reqData;
+        $baseRequestVO->req_time = date('YmdHis');
+        $baseRequestVO->version = $this->version;
+
+        $body = json_encode($baseRequestVO, JSON_UNESCAPED_UNICODE);
+        echo $body;
+        $authorization = $this->getAuthorization($body);
+        try{
+            return $this->post($this->apiUrl . '/api/v3/dcp/trans/close', $body, $authorization);
+        }catch(\Throwable $e) {
+            throw new \Exception('请求异常,'.$e->getMessage());
+        } 
     }
 
-    //06查询交易
-    public function tradequery()
+    //06查询交易 
+    public function tradequery($termNo, $outTradeNo)
     {
+        $reqData = new TradequeryReq();
+        $reqData->merchant_no = $this->merchantNo;
+        $reqData->term_no = $termNo; 
+        $reqData->out_trade_no = $outTradeNo;  
+        $baseRequestVO = new BaseRequest(); 
+        $baseRequestVO->req_data = $reqData;
+        $baseRequestVO->req_time = date('YmdHis');
+        $baseRequestVO->version = $this->version;
 
+        $body = json_encode($baseRequestVO, JSON_UNESCAPED_UNICODE);
+        echo $body;
+        $authorization = $this->getAuthorization($body);
+        try{
+            return $this->post($this->apiUrl . '/api/v3/labs/query/tradequery', $body, $authorization);
+        }catch(\Throwable $e) {
+            throw new \Exception('请求异常,'.$e->getMessage());
+        } 
     }
 
     /**
@@ -219,10 +256,13 @@ class Lakala {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);//设置HTTP头
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POST, 1);
-            $res = curl_exec($ch);
+            $result = curl_exec($ch);
             curl_close($ch);
-    
-            return json_decode($res, 1);
+            $result = json_decode($result, true);
+            if (!isset($result['code']) || $result['code'] != 'BBS00000') {
+                throw new \Exception('请求异常: ' . $result['msg']);
+            }
+            return $result; 
         }
 
     //签名参数转数组
