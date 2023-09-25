@@ -91,7 +91,7 @@ class Lakala {
         $baseRequestVO->version = $this->version;
 
         $body = json_encode($baseRequestVO, JSON_UNESCAPED_UNICODE);
-        logger()->info($body);
+        logger()->info( $body );
         $authorization = $this->getAuthorization($body);
         try{
             return $this->post($this->apiUrl . '/api/v3/labs/trans/preorder', $body, $authorization);
