@@ -91,7 +91,7 @@ class Lakala {
         $baseRequestVO->version = $this->version;
 
         $body = json_encode($baseRequestVO, JSON_UNESCAPED_UNICODE);
-        echo $body;
+        logger()->info($body);
         $authorization = $this->getAuthorization($body);
         try{
             return $this->post($this->apiUrl . '/api/v3/labs/trans/preorder', $body, $authorization);
@@ -232,9 +232,11 @@ class Lakala {
         if (!$response) {
             throw new \Exception('请求异常');
         }
-        echo "\r\n";
-        echo $response->getBody()->getContents();
-        $result = json_decode($response->getBody()->getContents(), true);
+     
+        $contents =  $response->getBody()->getContents();
+        logger()->info( $contents );
+        $result = json_decode($contents, true);
+        logger()->info( $result );
         if (!isset($result['code']) || $result['code'] != 'BBS00000') {
             throw new \Exception('请求异常: ' . $result['msg']);
         }
